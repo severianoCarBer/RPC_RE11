@@ -1,3 +1,4 @@
+/gun/energy 0.58. MeV
 #
 # simple.mac
 # simple commands
@@ -27,9 +28,14 @@
 #/vis/scene/add/hits
 #/vis/scene/add/trajectories
 
-#/gun/particle neutron 
+#/gun/particle neutron
+#/gun/particle e-
+#/gun/particle e+
+/gun/particle gamma
 
-/gun/energy 10. MeV 
+#/gun/particle {varuno}
+
+#/gun/energy 10. MeV
 
 /run/verbose 0
 /run/dumpRegion 2
@@ -47,5 +53,3 @@
 
 #/run/beamOn  10
 /run/beamOn  100000
-
-

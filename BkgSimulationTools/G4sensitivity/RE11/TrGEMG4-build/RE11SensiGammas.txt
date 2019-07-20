@@ -1,0 +1,52 @@
+0.029
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000100532 +- 3.17894e-05
+0.034
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000170894 +- 4.14443e-05
+0.043
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000201029 +- 4.4947e-05
+0.055
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000180906 +- 4.26362e-05
+0.071
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000362064 +- 6.0333e-05
+0.09
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000402131 +- 6.35698e-05
+0.11
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00045232 +- 6.74127e-05
+0.12
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.000583131 +- 7.65466e-05
+0.19
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00091438 +- 9.58092e-05
+0.22
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00122687 +- 0.000111007
+0.29
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00172896 +- 0.000131718
+0.35
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00253366 +- 0.000159403
+0.44
+
+Processing ./runSensitivity.C...
+Sensitivity= 0.00408233 +- 0.000202189
