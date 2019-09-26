@@ -20,13 +20,13 @@
 
 RE11DetectorConstruction::RE11DetectorConstruction() :
    fFR4Mat(0), fGasMat(0), fEmptyMat(0), fAirMat(0),
-   fCuMat(0),fKAPTONMat(0),fWaterMat(0),fAlMat(0),fMylarMat(0),fHPLMat(0),
+   fCuMat(0),fKAPTONMat(0),fWaterMat(0),fAlMat(0),fAlCoreMat(0),fMylarMat(0),fHPLMat(0),
    tripleGemThinBase(0), tripleGemLargeBase(0), tripleGemHeight(0)
     
 {
 
-   tripleGemThinBase  = 271.0*mm ;
-   tripleGemLargeBase = 453.0*mm ;
+   tripleGemThinBase  = 645.0*mm ;
+   tripleGemLargeBase = 1244.0*mm ;
    tripleGemHeight    = 1007.0*mm ;
 
 //    G4double cut = 1*mm ;
@@ -72,6 +72,12 @@ void RE11DetectorConstruction::DefineMaterials() {
    G4Material* SiO2 =  new G4Material("quartz",density= 2.200*g/cm3, numel=2);
    SiO2->AddElement(elSi, natoms=1);
    SiO2->AddElement(elO , natoms=2);
+
+
+   // Aluminum core (per honeycomb core) alluminio con densità inferiore                                                                                                
+   density=0.5*g/cm3;
+   G4Material* AlCore = G4NistManager::Instance()->BuildMaterialWithNewDensity("AlCore","G4_Al",density);
+   fAlCoreMat = AlCore; 
 
    //from http://www.physi.uni-heidelberg.de/~adler/TRD/TRDunterlagen/RadiatonLength/tgc2.htm
   //Epoxy (for FR4 )
@@ -210,7 +216,8 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
    G4LogicalVolume* worldLog = new G4LogicalVolume(worldBox, fEmptyMat, "WorldLog") ;
    // Set visual attributes
    G4VisAttributes *worldAttributes = new G4VisAttributes ;
-   worldAttributes->SetVisibility(false) ;
+    worldAttributes->SetVisibility(false) ;
+   //worldAttributes->SetVisibility(true) ;
    worldLog->SetVisAttributes(worldAttributes) ;
 
    G4VPhysicalVolume* worldPhys = new G4PVPlacement(0, G4ThreeVector(), worldLog, "WorldSpace", 0, false, 0) ;
@@ -312,20 +319,20 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
  for(size_t A=0; A<4; A++) { 
        NomeFebCap[A]=NomeFeb[A]+"Cap";
        NomeFebCapLog[A]=NomeFeb[A]+"CapLog";
-       NomeFebAl[A]=NomeFeb[A]+"Al";
+       NomeFebAl[A]=NomeFeb[A]+"Alseve";
        NomeFebAlLog[A]=NomeFeb[A]+"AlLog";
  }
   
  //FEB Al Faraday cage
  for(G4int cool=0;cool<4;cool++){
-        box= new G4Box(NomeFebAl[cool] , FebAlThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
+   box= new G4Box(NomeFebAl[cool] , FebAlThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
  	logicStrato = new G4LogicalVolume(box, fAlMat,NomeFebAlLog[cool] ) ;
-  	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
-  	FebAlCollection.push_back(box) ;
-  	FebAlLogCollection.push_back(logicStrato) ;
-  	logicStrato->SetSensitiveDetector(sensitive) ;
-  }
- //FEB Cu Caps
+ 	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ 	FebAlCollection.push_back(box) ;
+ 	FebAlLogCollection.push_back(logicStrato) ;
+ 	logicStrato->SetSensitiveDetector(sensitive) ;
+ }
+  //FEB Cu Caps
  for(G4int cool=0;cool<4;cool++){
         box= new G4Box(NomeFebCap[cool] , FebCapThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
  	logicStrato = new G4LogicalVolume(box, fCuMat,NomeFebCapLog[cool] ) ;
@@ -399,14 +406,50 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
  H2OTorusLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
  H2OTorusLog->SetSensitiveDetector(sensitive) ;
  
- //Al Cover
- AlCover=Trapezoid("AlCover", 0.5*mm);
- AlCoverLog = new G4LogicalVolume (AlCover, fAlMat,"AlCoverLog");   
- AlCoverLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
- AlCoverLog->SetSensitiveDetector(sensitive) ;
+ //Al Cover Top Up
+ AlCoverBottUp=Trapezoid("AlCoverBottUp", 0.5*mm);
+ AlCoverBottUpLog = new G4LogicalVolume (AlCoverBottUp, fAlMat,"AlCoverBottUpLog");   
+ AlCoverBottUpLog->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ AlCoverBottUpLog->SetSensitiveDetector(sensitive) ;
+
+ //Honey panel Top
+ HoneyPanelBott=Trapezoid("HoneyPanelBott", 5.0*mm);
+ HoneyPanelBottLog = new G4LogicalVolume (HoneyPanelBott, fAlCoreMat,"HoneyPanelBottLog");
+ HoneyPanelBottLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
+ HoneyPanelBottLog->SetSensitiveDetector(sensitive) ;
+
+ //Al Cover Top Down
+                                                                                                                      
+ AlCoverBottDown=Trapezoid("AlCoverBottDown", 0.5*mm);
+ AlCoverBottDownLog = new G4LogicalVolume (AlCoverBottDown, fAlMat,"AlCoverBottDownLog");
+ AlCoverBottDownLog->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ AlCoverBottDownLog->SetSensitiveDetector(sensitive) ;
+
+ //Al Cover Bott  Up                                                                                                                         
+ AlCoverTopUp=Trapezoid("AlCoverTopUp", 0.5*mm);
+ AlCoverTopUpLog = new G4LogicalVolume (AlCoverTopUp, fAlMat,"AlCoverTopUpLog");
+ AlCoverTopUpLog->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ AlCoverTopUpLog->SetSensitiveDetector(sensitive) ;
+
+ //Honey panel Bott                                                                                                                         
+ HoneyPanelTop=Trapezoid("HoneyPanelTop", 5.0*mm);
+ HoneyPanelTopLog = new G4LogicalVolume (HoneyPanelTop, fAlCoreMat,"AlPanHoneyTopLog");
+ HoneyPanelTopLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
+ HoneyPanelTopLog->SetSensitiveDetector(sensitive) ;
+
+ //Al Cover Bott Down                                                                                                                       
+ AlCoverTopDown=Trapezoid("AlCoverTopDown", 0.5*mm);
+ AlCoverTopDownLog = new G4LogicalVolume (AlCoverTopDown, fAlMat,"AlCoverTopDownLog");
+ AlCoverTopDownLog->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ AlCoverTopDownLog->SetSensitiveDetector(sensitive) ;
+
+
+
+
 
  //FAKE DETECTORS
  FakeBottom=Trapezoid("FakeBottom", 0.1*mm);
+ //FakeBottom=Trapezoid("FakeBottom", 0.2*mm);
  FakeBottomLog = new G4LogicalVolume (FakeBottom, fAirMat,"FakeBottomLog");   
  FakeBottomLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
  FakeBottomLog->SetSensitiveDetector(sensitive) ;
@@ -440,6 +483,7 @@ void RE11DetectorConstruction::PlaceGeometry(G4RotationMatrix *pRot, G4ThreeVect
    G4double ZTranslation = tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
    G4int cpN=0;
    G4ThreeVector position;
+   G4ThreeVector position1;
 //---------------------------------------------------------------------------------fake bottom
       
        XTranslation += FakeBottom->GetXHalfLength1() ;
@@ -456,83 +500,124 @@ void RE11DetectorConstruction::PlaceGeometry(G4RotationMatrix *pRot, G4ThreeVect
  	XTranslation += FakeBottom->GetXHalfLength1() ;
  	cpN++;
    
-     //---------------------------------------------------------------------------------AlCover
+     //---------------------------------------------------------------------------------AlCoverTopUp
      
-     XTranslation += AlCover->GetXHalfLength1() ;
+     XTranslation += AlCoverBottUp->GetXHalfLength1() ;
      position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
-     G4cout << "Volume ( 0 ) " << AlCover->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
+     G4cout << "Volume ( 0 ) " << AlCoverBottUp->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
       
      new G4PVPlacement(pRot,
      position,
-     AlCoverLog,
-     "AlCover",
+     AlCoverBottUpLog,
+     "AlCoverBottUp",
      pMotherLogical,
      false,
      cpN) ;
-      XTranslation += AlCover->GetXHalfLength1() ;
+      XTranslation += AlCoverBottUp->GetXHalfLength1() ;
       cpN++;
+      //--------------------------------------------------------------------------------------HoneyPanelTop
      
+
+      XTranslation += HoneyPanelBott->GetXHalfLength1() ;
+      position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
+      G4cout << "Volume ( 0 ) " << HoneyPanelBott->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Leng\
+th") << G4endl;
+
+      new G4PVPlacement(pRot,
+			position,
+			HoneyPanelBottLog,
+			"HoneyPanelBott",
+			pMotherLogical,
+			false,
+			cpN) ;
+      XTranslation += HoneyPanelBott->GetXHalfLength1() ;
+      cpN++;
+
   
+      //---------------------------------------------------------------------------------AlCoverTopDown
+
+      XTranslation += AlCoverBottDown->GetXHalfLength1() ;
+      position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
+      G4cout << "Volume ( 0 ) " << AlCoverBottDown->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
+
+      new G4PVPlacement(pRot,
+			position,
+			AlCoverBottDownLog,
+			"AlCoverBottDown",
+			pMotherLogical,
+			false,
+			cpN) ;
+      XTranslation += AlCoverBottDown->GetXHalfLength1() ;
+      cpN++;
+
+
+
   //---------------------------------------------------------------------------------FEB Al Faraday Cage
       XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
-      
-      for(size_t i=0 ; i<FebAlCollection.size() ; i++) {
-	G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-       G4cout << "Volume (" << cpN << ") " << FebAlCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-      new G4PVPlacement(pRot,
-      position,
-      FebAlLogCollection.at(i),
-      FebAlCollection.at(i)->GetName(),
-      pMotherLogical,
-      false,
-      cpN) ;
-      cpN++;
-	if(i!=FebAlCollection.size()-1){ ZTranslation -= FebAlCollection.at(i)->GetZHalfLength() +
-			FebAlCollection.at(i+1)->GetZHalfLength() +
-		space[i+1];}
-	else {ZTranslation=tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;} 
-   }
-      XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
+      G4cout << "FebAlCollection.at(0)->GetXHalfLength() = " << FebAlCollection.at(0)->GetXHalfLength() << G4endl;
+      G4cout << "FebAlCollection.at(1)->GetXHalfLength() = " << FebAlCollection.at(1)->GetXHalfLength() << G4endl;
+      G4cout << "FebAlCollection.at(2)->GetXHalfLength() = " << FebAlCollection.at(2)->GetXHalfLength() << G4endl;
+      G4cout << "FebAlCollection.at(3)->GetXHalfLength() = " << FebAlCollection.at(3)->GetXHalfLength() << G4endl;
+      //for(size_t i=0 ; i<FebAlCollection.size() ; i++) {
+      //G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+      //G4cout << "yomero Volume (" << cpN << ") " << FebAlCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; G4cout<<"-----"<<FebAlCollection.size()<<G4endl ;
+	//new G4PVPlacement(pRot,
+	//position,
+	//FebAlLogCollection.at(i),
+	//FebAlCollection.at(i)->GetName(),
+	//pMotherLogical,
+	//false,
+	//cpN) ;
+      //cpN++;
+      //if(i!=FebAlCollection.size()-1){ ZTranslation -= FebAlCollection.at(i)->GetZHalfLength() +
+      //		FebAlCollection.at(i+1)->GetZHalfLength() +
+      //	space[i+1];}
+      //else {ZTranslation=tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;} 
+      //}
+      //XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
    //---------------------------------------------------------------------------------FEB 
      
       XTranslation += FebCollection.at(0)->GetXHalfLength() ;
       
-      for(size_t i=0 ; i<FebCollection.size() ; i++) {
-	G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-       G4cout << "Volume (" << cpN << ") " << FebCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-      new G4PVPlacement(pRot,
-      position,
-      FebLogCollection.at(i),
-      FebCollection.at(i)->GetName(),
-      pMotherLogical,
-      false,
-      cpN) ;
-      cpN++;
-	if(i!=FebCollection.size()-1){ ZTranslation -= FebCapCollection.at(i)->GetZHalfLength() +
-			FebCapCollection.at(i+1)->GetZHalfLength() +
-		space[i+1];}
+      //for(size_t i=0 ; i<FebCollection.size() ; i++) {
+	//G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+	//G4cout << "Volume (" << cpN << ") " << FebCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+       //new G4PVPlacement(pRot,
+       //position,
+       //FebLogCollection.at(i),
+       //FebCollection.at(i)->GetName(),
+       //pMotherLogical,
+       //false,
+       //cpN) ;
+       //cpN++;
+      //if(i!=FebCollection.size()-1){ ZTranslation -= FebCapCollection.at(i)->GetZHalfLength() +
+      //		FebCapCollection.at(i+1)->GetZHalfLength() +
+      //	space[i+1];}
    //	else {ZTranslation=tripleGemHeight/2 - crossBarSpace[0] - crossBarCollection.at(0)->GetZHalfLength()/2;}       //prepare Ztranslation for crossbars
-	else {ZTranslation=tripleGemHeight/2  - CuTube1->GetDz();}     //prepare Ztranslation for coolingpipe
-   }
+      //else {ZTranslation=tripleGemHeight/2  - CuTube1->GetDz();}     //prepare Ztranslation for coolingpipe
+      //}
       XTranslation += FebCollection.at(0)->GetXHalfLength() ;
    //---------------------------------------------------------------------------------cooling pipes
      
      XTranslation += CuTube1->GetRMax() ;
      //COOLING PIPES
-      G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;
-      G4cout << "Volume (  " << cpN <<" ) CuTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-      position = tlate + G4ThreeVector(XTranslation,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-       new G4PVPlacement(pRot,
+     G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;
+     //G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;       
+     G4cout << "Volume (  " << cpN <<" ) CuTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+     G4cout << "XTranslation = " << XTranslation << G4endl ;
+     position = tlate + G4ThreeVector(XTranslation,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+     position1 = tlate + G4ThreeVector(0,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+      new G4PVPlacement(pRot,
       position,
       CuTube1Log,
       "CuTube1",
       pMotherLogical,
       false,
       cpN) ;
-       cpN++; 
-      G4cout << "Volume (  " << cpN <<" )H2OTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-       new G4PVPlacement(pRot,
-      position,
+     cpN++; 
+     G4cout << "Volume (  " << cpN <<" )H2OTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+      new G4PVPlacement(pRot,
+      position1,
       H2OTube1Log,
       "H2OTube1",
       pMotherLogical,
@@ -541,72 +626,72 @@ void RE11DetectorConstruction::PlaceGeometry(G4RotationMatrix *pRot, G4ThreeVect
       cpN++; 
       G4cout << "Volume (  " << cpN <<" )CuTube2" << " the position is " <<	G4BestUnit(XTranslation,"Length") << G4endl ; 
     
-       position = tlate + G4ThreeVector(XTranslation,-PipeY, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-       new G4PVPlacement(pRot,
-      position,
-      CuTube2Log,
-      "CuTube2",
-      pMotherLogical,
-      false,
-      cpN) ;
-      cpN++; 
+     //position = tlate + G4ThreeVector(XTranslation,-PipeY, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+       // new G4PVPlacement(pRot,
+       //position,
+       //CuTube2Log,
+       //"CuTube2",
+       //pMotherLogical,
+       //false,
+       //cpN) ;
+     //cpN++; 
        
-      G4cout << "Volume (  " << cpN <<" )H2OTube2" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-       new G4PVPlacement(pRot,
-      position,
-      H2OTube2Log,
-      "H2OTube2",
-      pMotherLogical,
-      false,
-      cpN) ;
-       cpN++; 
+     //G4cout << "Volume (  " << cpN <<" )H2OTube2" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+      //new G4PVPlacement(pRot,
+      //position,
+      //H2OTube2Log,
+      //"H2OTube2",
+      //pMotherLogical,
+      //false,
+      //cpN) ;
+     //cpN++; 
    
-      G4RotationMatrix* rotationTorus = new G4RotationMatrix() ;
+     //G4RotationMatrix* rotationTorus = new G4RotationMatrix() ;
       //rotationPlacement->rotateZ(M_PI / 2.0) ;
-      rotationTorus->rotateX(M_PI ) ;
+      //rotationTorus->rotateX(M_PI ) ;
     
-       G4cout << "Volume (  " << cpN <<" )CuTorus" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-	position = tlate + G4ThreeVector(XTranslation,0, ZTranslation - CuTube1->GetDz()).transform(G4RotationMatrix(*pRot).inverse()) ;
-       new G4PVPlacement(rotationTorus,
-      position,
-      CuTorusLog,
-      "CuTorus",
-      pMotherLogical,
-      false,
-      cpN) ;
-       cpN++; 
-	G4cout << "Volume (  " << cpN <<" )H2OTorus" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-	position = tlate + G4ThreeVector(XTranslation,0, ZTranslation- CuTube1->GetDz()).transform(G4RotationMatrix(*pRot).inverse()) ;
-	new G4PVPlacement(rotationTorus,
-      position,
-      H2OTorusLog,
-      "H2OTorus",
-      pMotherLogical,
-      false,
-      cpN) ;
+     //G4cout << "Volume (  " << cpN <<" )CuTorus" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+     //position = tlate + G4ThreeVector(XTranslation,0, ZTranslation - CuTube1->GetDz()).transform(G4RotationMatrix(*pRot).inverse()) ;
+	//new G4PVPlacement(rotationTorus,
+	//position,
+	//CuTorusLog,
+	//"CuTorus",
+	//pMotherLogical,
+	//false,
+	//cpN) ;
+     //cpN++; 
+     //G4cout << "Volume (  " << cpN <<" )H2OTorus" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+     //position = tlate + G4ThreeVector(XTranslation,0, ZTranslation- CuTube1->GetDz()).transform(G4RotationMatrix(*pRot).inverse()) ;
+	//new G4PVPlacement(rotationTorus,
+	//position,
+	//H2OTorusLog,
+	//"H2OTorus",
+	//pMotherLogical,
+	//false,
+	//cpN) ;
        XTranslation += CuTube1->GetRMax() ;
-       ZTranslation=tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
-       cpN++; 
+       //ZTranslation=tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
+       //cpN++; 
    //---------------------------------------------------------------------------------FEB Cu cooling panel
       XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
  
-      for(size_t i=0 ; i<FebCapCollection.size() ; i++) {
-	G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-       G4cout << "Volume (" << cpN << ") " << FebCapCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-      new G4PVPlacement(pRot,
-      position,
-      FebCapLogCollection.at(i),
-      FebCapCollection.at(i)->GetName(),
-      pMotherLogical,
-      false,
-      cpN) ;
-      cpN++;
-	if(i!=FebCapCollection.size()-1){ ZTranslation -= FebCapCollection.at(i)->GetZHalfLength() +
-			FebCapCollection.at(i+1)->GetZHalfLength() +
-		space[i+1];}
-	else {         ZTranslation=tripleGemHeight/2 - crossBarSpace[0] - crossBarCollection.at(0)->GetZHalfLength()/2;
-   }   
-   }
+      //for(size_t i=0 ; i<FebCapCollection.size() ; i++) {
+      //G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+      //G4cout << "Volume (" << cpN << ") " << FebCapCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+       //new G4PVPlacement(pRot,
+       //position,
+       //FebCapLogCollection.at(i),
+       //FebCapCollection.at(i)->GetName(),
+       //pMotherLogical,
+       //false,
+       //cpN) ;
+      //cpN++;
+      //if(i!=FebCapCollection.size()-1){ ZTranslation -= FebCapCollection.at(i)->GetZHalfLength() +
+	    //		FebCapCollection.at(i+1)->GetZHalfLength() +
+	    //	space[i+1];}
+	//else {         ZTranslation=tripleGemHeight/2 - crossBarSpace[0] - crossBarCollection.at(0)->GetZHalfLength()/2;
+	  //}   
+	//}
       XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
    
   //  //---------------------------------------------------------------------------------CrossBar
@@ -650,8 +735,63 @@ void RE11DetectorConstruction::PlaceGeometry(G4RotationMatrix *pRot, G4ThreeVect
     }
     
   
+
+     //---------------------------------------------------------------------------------AlCoverTopUp                                                                                                                                                                 
+
+     XTranslation += AlCoverTopUp->GetXHalfLength1() ;
+     position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
+     G4cout << "Volume ( 0 ) " << AlCoverTopUp->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
+
+     new G4PVPlacement(pRot,
+		       position,
+		       AlCoverTopUpLog,
+		       "AlCover",
+		       pMotherLogical,
+		       false,
+		       cpN) ;
+     XTranslation += AlCoverTopUp->GetXHalfLength1() ;
+     cpN++;
+     //--------------------------------------------------------------------------------------HoneyPanelTop                                                                                                                                                          
+
+
+     XTranslation += HoneyPanelTop->GetXHalfLength1() ;
+     position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
+     G4cout << "Volume ( 0 ) " << HoneyPanelTop->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Leng\                                                                                                                                                
+th") << G4endl;
+
+     new G4PVPlacement(pRot,
+		       position,
+		       HoneyPanelTopLog,
+		       "HoneyPanelTop",
+		       pMotherLogical,
+		       false,
+		       cpN) ;
+     XTranslation += HoneyPanelTop->GetXHalfLength1() ;
+     cpN++;
+
+
+
+     //---------------------------------------------------------------------------------AlCoverTopDown
+     XTranslation += AlCoverTopDown->GetXHalfLength1() ;
+     position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
+     G4cout << "Volume ( 0 ) " << AlCoverTopDown->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
+
+     new G4PVPlacement(pRot,
+		       position,
+		       AlCoverTopDownLog,
+		       "AlCoverTopDown",
+		       pMotherLogical,
+		       false,
+		       cpN) ;
+     XTranslation += AlCoverBottDown->GetXHalfLength1() ;
+     cpN++;
+
+
+
  //---------------------------------------------------------------------------------Fake Top
-    XTranslation += FakeTop->GetXHalfLength1() ;
+     XTranslation += FakeTop->GetXHalfLength1() ;
+     //XTranslation = 300;
+    G4cout << "eje X  " << XTranslation << G4endl;
     position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
     G4cout << "Volume (" << cpN << ") " << FakeTop->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
      

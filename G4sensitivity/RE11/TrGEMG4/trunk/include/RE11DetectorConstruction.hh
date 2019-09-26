@@ -47,6 +47,7 @@ class RE11DetectorConstruction : public G4VUserDetectorConstruction
       G4Material*	 fAlMat;
       G4Material*	 fMylarMat;
       G4Material*	 fHPLMat;
+  G4Material*      fAlCoreMat; 
  //     G4ProductionCuts*  fGasDetectorCuts;
       G4double           tripleGemThinBase; 
       G4double           tripleGemLargeBase;
@@ -80,8 +81,23 @@ class RE11DetectorConstruction : public G4VUserDetectorConstruction
       G4Torus*			    H2OTorus;
       G4LogicalVolume*		    H2OTorusLog;
  
-      G4Trd*			    AlCover;
-      G4LogicalVolume*		    AlCoverLog;
+
+  G4Trd*                        AlCoverBottUp;
+  G4LogicalVolume*              AlCoverBottUpLog;
+  G4Trd*                       HoneyPanelBott;
+  G4LogicalVolume*             HoneyPanelBottLog;
+  G4Trd*                        AlCoverBottDown;
+  G4LogicalVolume*              AlCoverBottDownLog;
+
+
+
+      G4Trd*			    AlCoverTopUp;
+      G4LogicalVolume*		    AlCoverTopUpLog;
+      G4Trd*                       HoneyPanelTop;
+      G4LogicalVolume*             HoneyPanelTopLog;
+      G4Trd*                        AlCoverTopDown;
+      G4LogicalVolume*              AlCoverTopDownLog;
+
  
       G4Trd*			    FakeBottom;
       G4LogicalVolume*		    FakeBottomLog;
