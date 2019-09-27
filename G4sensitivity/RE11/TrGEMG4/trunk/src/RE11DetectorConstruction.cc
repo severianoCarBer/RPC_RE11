@@ -227,9 +227,10 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
  	        
 		
 	//CONTINOUS MATERIALS
-		std::string NomeStrati[17]= 
+		std::string NomeStrati[16]= 
 		{
-		"MylarElecIns1","totMylarHV1","CopperGND1",     
+		  "CopperGND1", "MylarElecIns1",//"totMylarHV1",
+		  "Gap1",     
 		"HPL1",					        		//HPL
 		"GasGap1",							//GasGap1
 		"HPL2",					       			//HPL
@@ -237,19 +238,21 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
 		"HPL3",					        		//HPL
 		"GasGap2",		                        		//GasGap2
 		"HPL4",					        		//HPL
-		"CopperGND2","totMylarHV2","MylarElecIns2",     		//Readout Board
-		"AlPanel"  							//Aluminum Panel
+		  "Gap2",//"totMylarHV2",
+		  "MylarElecIns2","CopperGND2",     		//Readout Board
+		  //	"AlPanel"  							//Aluminum Panel
 		};
              
-	        std::string NomeStratiLog[17];
+	        std::string NomeStratiLog[16];
 		
-		for(size_t A=0; A<17; A++) { 
+		for(size_t A=0; A<16; A++) { 
 		    NomeStratiLog[A]=NomeStrati[A]+"Log";
 		}
 		
-		G4Material* MatStrati[17] = 
+		G4Material* MatStrati[16] = 
 		{
-		fMylarMat,fMylarMat,fCuMat,	
+		  fCuMat,fMylarMat,//fMylarMat,
+		 fAirMat,
 		fHPLMat, 	   		
 		fGasMat,	
 		fHPLMat, 	   		
@@ -257,22 +260,22 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
 		fHPLMat, 	   		
 		fGasMat,	
 		fHPLMat, 	   		
-		fCuMat,fMylarMat,fMylarMat,	
-		fAlMat
+		  fAirMat ,fMylarMat,fCuMat,//fMylarMat,	
+		  //fAlMat
 		};
 		
-		G4double spessoreStrati[17]=
+		G4double spessoreStrati[16]=
 		{
-		0.2*mm,0.4*mm,0.038*mm,	
-		2*mm, 	   		
-		2*mm,	
-		2*mm, 	   		
+		0.07*mm,0.15*mm,5.5*mm,	
+		1.4*mm, 	   		
+		1.4*mm,	
+		1.4*mm, 	   		
 		0.2*mm,0.017*mm,0.4*mm,0.2*mm,	
-		2*mm, 	   		
-		2*mm,	
-		2*mm, 	   		
-		0.038*mm,0.4*mm,0.2*mm,	
-		5*mm
+		1.4*mm, 	   		
+		1.4*mm,	
+		1.4*mm, 	   		
+		5.5*mm,0.15*mm,0.07*mm,	
+		//5*mm
 		};
 		
 		
@@ -283,7 +286,7 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
 		G4Trd* strato; G4Box* box;
 		G4LogicalVolume* logicStrato;
 		
-		for(G4int lyr=0;lyr<17;lyr++){
+		for(G4int lyr=0;lyr<16;lyr++){
 			
 			strato=Trapezoid(NomeStrati[lyr], spessoreStrati[lyr]);
 		        logicStrato = new G4LogicalVolume (strato, MatStrati[lyr],NomeStratiLog[lyr]);   
@@ -553,11 +556,11 @@ th") << G4endl;
 
 
   //---------------------------------------------------------------------------------FEB Al Faraday Cage
-      XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
-      G4cout << "FebAlCollection.at(0)->GetXHalfLength() = " << FebAlCollection.at(0)->GetXHalfLength() << G4endl;
-      G4cout << "FebAlCollection.at(1)->GetXHalfLength() = " << FebAlCollection.at(1)->GetXHalfLength() << G4endl;
-      G4cout << "FebAlCollection.at(2)->GetXHalfLength() = " << FebAlCollection.at(2)->GetXHalfLength() << G4endl;
-      G4cout << "FebAlCollection.at(3)->GetXHalfLength() = " << FebAlCollection.at(3)->GetXHalfLength() << G4endl;
+      //XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
+      //G4cout << "FebAlCollection.at(0)->GetXHalfLength() = " << FebAlCollection.at(0)->GetXHalfLength() << G4endl;
+      //G4cout << "FebAlCollection.at(1)->GetXHalfLength() = " << FebAlCollection.at(1)->GetXHalfLength() << G4endl;
+      //G4cout << "FebAlCollection.at(2)->GetXHalfLength() = " << FebAlCollection.at(2)->GetXHalfLength() << G4endl;
+      //G4cout << "FebAlCollection.at(3)->GetXHalfLength() = " << FebAlCollection.at(3)->GetXHalfLength() << G4endl;
       //for(size_t i=0 ; i<FebAlCollection.size() ; i++) {
       //G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
       //G4cout << "yomero Volume (" << cpN << ") " << FebAlCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; G4cout<<"-----"<<FebAlCollection.size()<<G4endl ;
@@ -577,7 +580,7 @@ th") << G4endl;
       //XTranslation += FebAlCollection.at(0)->GetXHalfLength() ;
    //---------------------------------------------------------------------------------FEB 
      
-      XTranslation += FebCollection.at(0)->GetXHalfLength() ;
+      //XTranslation += FebCollection.at(0)->GetXHalfLength() ;
       
       //for(size_t i=0 ; i<FebCollection.size() ; i++) {
 	//G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
@@ -596,35 +599,35 @@ th") << G4endl;
    //	else {ZTranslation=tripleGemHeight/2 - crossBarSpace[0] - crossBarCollection.at(0)->GetZHalfLength()/2;}       //prepare Ztranslation for crossbars
       //else {ZTranslation=tripleGemHeight/2  - CuTube1->GetDz();}     //prepare Ztranslation for coolingpipe
       //}
-      XTranslation += FebCollection.at(0)->GetXHalfLength() ;
+      // XTranslation += FebCollection.at(0)->GetXHalfLength() ;
    //---------------------------------------------------------------------------------cooling pipes
      
-     XTranslation += CuTube1->GetRMax() ;
+      //XTranslation += CuTube1->GetRMax() ;
      //COOLING PIPES
-     G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;
+     //G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;
      //G4double PipeY=-tripleGemThinBase/2+CuTube1->GetRMax()+70;       
-     G4cout << "Volume (  " << cpN <<" ) CuTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-     G4cout << "XTranslation = " << XTranslation << G4endl ;
-     position = tlate + G4ThreeVector(XTranslation,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-     position1 = tlate + G4ThreeVector(0,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-      new G4PVPlacement(pRot,
-      position,
-      CuTube1Log,
-      "CuTube1",
-      pMotherLogical,
-      false,
-      cpN) ;
-     cpN++; 
-     G4cout << "Volume (  " << cpN <<" )H2OTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-      new G4PVPlacement(pRot,
-      position1,
-      H2OTube1Log,
-      "H2OTube1",
-      pMotherLogical,
-      false,
-      cpN) ;
-      cpN++; 
-      G4cout << "Volume (  " << cpN <<" )CuTube2" << " the position is " <<	G4BestUnit(XTranslation,"Length") << G4endl ; 
+     //G4cout << "Volume (  " << cpN <<" ) CuTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+     //G4cout << "XTranslation = " << XTranslation << G4endl ;
+     //position = tlate + G4ThreeVector(XTranslation,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+     //position1 = tlate + G4ThreeVector(0,PipeY,ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+     // new G4PVPlacement(pRot,
+     // position,
+     // CuTube1Log,
+     // "CuTube1",
+     // pMotherLogical,
+     // false,
+     // cpN) ;
+     //cpN++; 
+     //G4cout << "Volume (  " << cpN <<" )H2OTube1" << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+     // new G4PVPlacement(pRot,
+     // position1,
+     // H2OTube1Log,
+     // "H2OTube1",
+     // pMotherLogical,
+     // false,
+     // cpN) ;
+     // cpN++; 
+     // G4cout << "Volume (  " << cpN <<" )CuTube2" << " the position is " <<	G4BestUnit(XTranslation,"Length") << G4endl ; 
     
      //position = tlate + G4ThreeVector(XTranslation,-PipeY, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
        // new G4PVPlacement(pRot,
@@ -669,11 +672,11 @@ th") << G4endl;
 	//pMotherLogical,
 	//false,
 	//cpN) ;
-       XTranslation += CuTube1->GetRMax() ;
+      //XTranslation += CuTube1->GetRMax() ;
        //ZTranslation=tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
        //cpN++; 
    //---------------------------------------------------------------------------------FEB Cu cooling panel
-      XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
+      //XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
  
       //for(size_t i=0 ; i<FebCapCollection.size() ; i++) {
       //G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
@@ -692,28 +695,28 @@ th") << G4endl;
 	//else {         ZTranslation=tripleGemHeight/2 - crossBarSpace[0] - crossBarCollection.at(0)->GetZHalfLength()/2;
 	  //}   
 	//}
-      XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
+      //XTranslation += FebCapCollection.at(0)->GetXHalfLength() ;
    
   //  //---------------------------------------------------------------------------------CrossBar
      
-     XTranslation += crossBarCollection.at(0)->GetXHalfLength() ;
-    for(size_t i=0 ; i<crossBarCollection.size() ; i++) {
-      G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
-     G4cout << "Volume (" << cpN << ") " << crossBarCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
-       new G4PVPlacement(pRot,
-       position,
-       crossBarLogCollection.at(i),
-       crossBarCollection.at(i)->GetName(),
-       pMotherLogical,
-       false,
-       i+cpN) ;
-       cpN++;
-      if(i!=crossBarCollection.size()-1){ ZTranslation -= crossBarCollection.at(i)->GetZHalfLength() +
-			 crossBarCollection.at(i+1)->GetZHalfLength() +
-		 crossBarSpace[i+1];}
-      else {ZTranslation=0;} 
- }
-       XTranslation += crossBarCollection.at(0)->GetXHalfLength() ;
+      //XTranslation += crossBarCollection.at(0)->GetXHalfLength() ;
+      //for(size_t i=0 ; i<crossBarCollection.size() ; i++) {
+      //G4ThreeVector position = tlate + G4ThreeVector(XTranslation,0, ZTranslation).transform(G4RotationMatrix(*pRot).inverse()) ;
+      //G4cout << "Volume (" << cpN << ") " << crossBarCollection.at(i)->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl ; 
+      //new G4PVPlacement(pRot,
+      //position,
+      //crossBarLogCollection.at(i),
+      //crossBarCollection.at(i)->GetName(),
+      //pMotherLogical,
+      //false,
+      //i+cpN) ;
+      //cpN++;
+      //if(i!=crossBarCollection.size()-1){ ZTranslation -= crossBarCollection.at(i)->GetZHalfLength() +
+      //		 crossBarCollection.at(i+1)->GetZHalfLength() +
+      //	 crossBarSpace[i+1];}
+      //else {ZTranslation=0;} 
+      //}
+      //XTranslation += crossBarCollection.at(0)->GetXHalfLength() ;
  
  //---------------------------------------------------------------------------------RPC
   
