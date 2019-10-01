@@ -1,0 +1,84 @@
+commit c001fb6a8ff4372c8d68eab6227c04451527df2d
+Author: amagnani <alice.magnani@cern.ch>
+Date:   Tue Feb 7 00:42:09 2017 +0100
+
+    Adding Geant4 code for sensitivity simulations
+
+commit 5c2033a0057c8872a9f1bb6813cc5846e27366a8
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:42:08 2016 +0300
+
+    Update README.md
+
+commit c3fcfb56ad09493c984e94f54d7af432b7e64b03
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:32:13 2016 +0300
+
+    updated
+
+commit a9140c4e2f175b57ab758a008b584b00252ff5dc
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:31:19 2016 +0300
+
+    updated
+
+commit 723991de64aa75b0aae59c3490edd92c90693a00
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:29:48 2016 +0300
+
+    instructions to run FLUKA simulation
+
+commit c69a4d600f0e353d5929af76328e1b752dc98f86
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:16:17 2016 +0300
+
+    new directory
+
+commit f4887ce3fc7d9d6b58441eaf3778ace137246129
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:15:09 2016 +0300
+
+    new directory
+
+commit d376b2eb3acb51ce5f94679b185adcd651d4c90b
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:06:09 2016 +0300
+
+    files to run FLUKA standalone
+
+commit 2c0bee43692ded138cd59fc21ff6d9fe4465dbf8
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 15:00:14 2016 +0300
+
+    deleted file
+
+commit 5de9aaf8b3880fb82cdd222f43059669fd004882
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 14:58:35 2016 +0300
+
+    adding geometries for Run-2 and Phase-2
+
+commit 13c2f8b32f0f46e38cc91e2d57a1bd76efd88628
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 12:11:12 2016 +0300
+
+    updated
+
+commit 0c4c2d369006b7b7d25629378b3359438ecb775a
+Merge: b0ebff2 fe07078
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 12:10:13 2016 +0300
+
+    Merge branch 'master' of https://github.com/castaned/FLUKA_CMS
+
+commit fe070783b382a21ae607500e83d02bb6d49057a4
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 12:10:02 2016 +0300
+
+    Create README.md
+
+commit b0ebff280a12e921ad98e5b02e26e3f2a554e001
+Author: Alfredo Castaneda <castaned@cern.ch>
+Date:   Tue Dec 13 11:51:06 2016 +0300
+
+    first push
