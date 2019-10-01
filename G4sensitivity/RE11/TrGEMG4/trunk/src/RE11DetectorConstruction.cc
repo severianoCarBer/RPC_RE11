@@ -224,7 +224,7 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
 
 // 
 // //____________________________________________________________________________________________________________
- 	        
+   G4cout << "----------TODO BIEN-------------  "<< G4endl;	        
 		
 	//CONTINOUS MATERIALS
 		std::string NomeStrati[16]= 
@@ -296,7 +296,7 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
 			trdLogCollection[lyr]->SetSensitiveDetector(sensitive) ;		       
 }
  
-
+		G4cout << "----------TODO BIEN 1-------------  "<< G4endl;
 //FEB, FEB cooling caps & FEB Al Faraday cage
 
  G4double FebThick=1.6*mm;
@@ -325,95 +325,98 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
        NomeFebAl[A]=NomeFeb[A]+"Alseve";
        NomeFebAlLog[A]=NomeFeb[A]+"AlLog";
  }
-  
+ G4cout << "----------TODO BIEN 2-------------  "<< G4endl;
  //FEB Al Faraday cage
- for(G4int cool=0;cool<4;cool++){
-   box= new G4Box(NomeFebAl[cool] , FebAlThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
- 	logicStrato = new G4LogicalVolume(box, fAlMat,NomeFebAlLog[cool] ) ;
- 	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
- 	FebAlCollection.push_back(box) ;
- 	FebAlLogCollection.push_back(logicStrato) ;
- 	logicStrato->SetSensitiveDetector(sensitive) ;
- }
+ // for(G4int cool=0;cool<4;cool++){
+ //box= new G4Box(NomeFebAl[cool] , FebAlThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
+ //	logicStrato = new G4LogicalVolume(box, fAlMat,NomeFebAlLog[cool] ) ;
+ //	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ //	FebAlCollection.push_back(box) ;
+ //	FebAlLogCollection.push_back(logicStrato) ;
+ //	logicStrato->SetSensitiveDetector(sensitive) ;
+ //}
   //FEB Cu Caps
- for(G4int cool=0;cool<4;cool++){
-        box= new G4Box(NomeFebCap[cool] , FebCapThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
- 	logicStrato = new G4LogicalVolume(box, fCuMat,NomeFebCapLog[cool] ) ;
-  	logicStrato->SetVisAttributes(new G4VisAttributes(*cathodeAttributes)) ;
-  	FebCapCollection.push_back(box) ;
-  	FebCapLogCollection.push_back(logicStrato) ;
-  	logicStrato->SetSensitiveDetector(sensitive) ;
-  }
+ //for(G4int cool=0;cool<4;cool++){
+ //     box= new G4Box(NomeFebCap[cool] , FebCapThick/2, FebCapWidth[cool]/2 , FebCapEigth[cool]/2) ;
+ //	logicStrato = new G4LogicalVolume(box, fCuMat,NomeFebCapLog[cool] ) ;
+ //	logicStrato->SetVisAttributes(new G4VisAttributes(*cathodeAttributes)) ;
+ //	FebCapCollection.push_back(box) ;
+ //	FebCapLogCollection.push_back(logicStrato) ;
+ // 	logicStrato->SetSensitiveDetector(sensitive) ;
+ //}
  //FEB 
- for(G4int cool=0;cool<4;cool++){
-        box= new G4Box(NomeFeb[cool] , FebThick/2, FebWidth[cool]/2 , FebEigth[cool]/2) ;
- 	logicStrato = new G4LogicalVolume(box, fFR4Mat,NomeFebLog[cool] ) ;
-  	logicStrato->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
-  	FebCollection.push_back(box) ;
-  	FebLogCollection.push_back(logicStrato) ;
-  	logicStrato->SetSensitiveDetector(sensitive) ;
-  }
+ //for(G4int cool=0;cool<4;cool++){
+ //     box= new G4Box(NomeFeb[cool] , FebThick/2, FebWidth[cool]/2 , FebEigth[cool]/2) ;
+ //	logicStrato = new G4LogicalVolume(box, fFR4Mat,NomeFebLog[cool] ) ;
+ //	logicStrato->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
+ //	FebCollection.push_back(box) ;
+ //	FebLogCollection.push_back(logicStrato) ;
+ // 	logicStrato->SetSensitiveDetector(sensitive) ;
+ //}
 
 
 //AL cross bars
 
- G4double crossBarThick=5*mm;
+// G4double crossBarThick=5*mm;
  
 //dimensioni aera
- G4double crossBarWidth[4]={440*mm, 380*mm, 332*mm, 310*mm};
- G4double crossBarEigth[4]={40*mm, 40*mm, 40*mm, 40*mm};
+ //G4double crossBarWidth[4]={440*mm, 380*mm, 332*mm, 310*mm};
+ //G4double crossBarEigth[4]={40*mm, 40*mm, 40*mm, 40*mm};
 
 
 //Nome dei volumi
- std::string NomeCrossBar[4]= {"crossBar1","crossBar2","crossBar3","crossBar4"};
- std::string NomeCrossBarLog[4]= {"crossBar1Log","crossBar2Log","crossBar3Log","crossBar4Log"};
+ //std::string NomeCrossBar[4]= {"crossBar1","crossBar2","crossBar3","crossBar4"};
+ //std::string NomeCrossBarLog[4]= {"crossBar1Log","crossBar2Log","crossBar3Log","crossBar4Log"};
   
- for(G4int cool=0;cool<4;cool++){
-        box= new G4Box(NomeCrossBar[cool] ,crossBarThick/2, crossBarWidth[cool]/2 , crossBarEigth[cool]/2) ;
- 	logicStrato = new G4LogicalVolume(box, fAlMat, NomeCrossBarLog[cool] ) ;
-  	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
-  	crossBarCollection.push_back(box) ;
-  	crossBarLogCollection.push_back(logicStrato) ;
-  	logicStrato->SetSensitiveDetector(sensitive) ;
-  }
+ //for(G4int cool=0;cool<4;cool++){
+ //     box= new G4Box(NomeCrossBar[cool] ,crossBarThick/2, crossBarWidth[cool]/2 , crossBarEigth[cool]/2) ;
+ //	logicStrato = new G4LogicalVolume(box, fAlMat, NomeCrossBarLog[cool] ) ;
+ //	logicStrato->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
+ //	crossBarCollection.push_back(box) ;
+ //	crossBarLogCollection.push_back(logicStrato) ;
+ //	logicStrato->SetSensitiveDetector(sensitive) ;
+ //}
   
   //COOLING PIPES
   
- CuTube1 = new G4Tubs("CuTube1",2.5*mm,3*mm,438.5*mm,0., 2*pi);
- CuTube1Log=new G4LogicalVolume(CuTube1, fCuMat,"CuTube1Log" ) ;    
- CuTube1Log->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
- CuTube1Log->SetSensitiveDetector(sensitive) ;
+ //CuTube1 = new G4Tubs("CuTube1",2.5*mm,3*mm,438.5*mm,0., 2*pi);
+ //CuTube1Log=new G4LogicalVolume(CuTube1, fCuMat,"CuTube1Log" ) ;    
+ //CuTube1Log->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
+ //CuTube1Log->SetSensitiveDetector(sensitive) ;
  
- H2OTube1 = new G4Tubs("H2OTube1",0*mm,2.5*mm,438.5*mm,0., 2*pi);
- H2OTube1Log=new G4LogicalVolume(H2OTube1, fWaterMat,"H2OTube1Log" ) ;    
- H2OTube1Log->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
- H2OTube1Log->SetSensitiveDetector(sensitive) ;
+ //H2OTube1 = new G4Tubs("H2OTube1",0*mm,2.5*mm,438.5*mm,0., 2*pi);
+ //H2OTube1Log=new G4LogicalVolume(H2OTube1, fWaterMat,"H2OTube1Log" ) ;    
+ //H2OTube1Log->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
+ //H2OTube1Log->SetSensitiveDetector(sensitive) ;
 
- CuTube2 = new G4Tubs("CuTube2",2.5*mm,3*mm,438.5*mm,0., 2*pi);
- CuTube2Log=new G4LogicalVolume(CuTube2, fCuMat,"CuTube2Log" ) ;    
- CuTube2Log->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
- CuTube2Log->SetSensitiveDetector(sensitive) ;
+ //CuTube2 = new G4Tubs("CuTube2",2.5*mm,3*mm,438.5*mm,0., 2*pi);
+ //CuTube2Log=new G4LogicalVolume(CuTube2, fCuMat,"CuTube2Log" ) ;    
+ //CuTube2Log->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
+ //CuTube2Log->SetSensitiveDetector(sensitive) ;
  
- H2OTube2 = new G4Tubs("H2OTube2",0*mm,2.5*mm,438.5*mm,0., 2*pi);
- H2OTube2Log=new G4LogicalVolume(H2OTube2, fWaterMat,"H2OTube2Log" ) ;    
- H2OTube2Log->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
- H2OTube2Log->SetSensitiveDetector(sensitive) ;
+ //H2OTube2 = new G4Tubs("H2OTube2",0*mm,2.5*mm,438.5*mm,0., 2*pi);
+ //H2OTube2Log=new G4LogicalVolume(H2OTube2, fWaterMat,"H2OTube2Log" ) ;    
+ //H2OTube2Log->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
+ //H2OTube2Log->SetSensitiveDetector(sensitive) ;
   
- CuTorus = new G4Torus("CuTorus",2.5*mm,3*mm, tripleGemThinBase/2-CuTube1->GetRMax()-70, 0, pi);
- CuTorusLog=new G4LogicalVolume(CuTorus, fCuMat,"CuTorusLog" ) ;    
- CuTorusLog->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
- CuTorusLog->SetSensitiveDetector(sensitive) ;
+ //CuTorus = new G4Torus("CuTorus",2.5*mm,3*mm, tripleGemThinBase/2-CuTube1->GetRMax()-70, 0, pi);
+ //CuTorusLog=new G4LogicalVolume(CuTorus, fCuMat,"CuTorusLog" ) ;    
+ //CuTorusLog->SetVisAttributes(new G4VisAttributes(*gasAttributes)) ;
+ //CuTorusLog->SetSensitiveDetector(sensitive) ;
  
- H2OTorus = new G4Torus("H2OTorus",0*mm,2.5*mm, tripleGemThinBase/2-H2OTube1->GetRMax()-70, 0, pi);
- H2OTorusLog=new G4LogicalVolume(H2OTorus, fWaterMat,"H2OTorusLog" ) ;    
- H2OTorusLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
- H2OTorusLog->SetSensitiveDetector(sensitive) ;
+ //H2OTorus = new G4Torus("H2OTorus",0*mm,2.5*mm, tripleGemThinBase/2-H2OTube1->GetRMax()-70, 0, pi);
+ //H2OTorusLog=new G4LogicalVolume(H2OTorus, fWaterMat,"H2OTorusLog" ) ;    
+ //H2OTorusLog->SetVisAttributes(new G4VisAttributes(*g10Attributes)) ;
+ //H2OTorusLog->SetSensitiveDetector(sensitive) ;
  
  //Al Cover Top Up
  AlCoverBottUp=Trapezoid("AlCoverBottUp", 0.5*mm);
  AlCoverBottUpLog = new G4LogicalVolume (AlCoverBottUp, fAlMat,"AlCoverBottUpLog");   
  AlCoverBottUpLog->SetVisAttributes(new G4VisAttributes(*insAttributes)) ;
  AlCoverBottUpLog->SetSensitiveDetector(sensitive) ;
+
+
+ G4cout << "----------TODO BIEN 3-------------  "<< G4endl;
 
  //Honey panel Top
  HoneyPanelBott=Trapezoid("HoneyPanelBott", 5.0*mm);
@@ -447,7 +450,7 @@ G4VPhysicalVolume* RE11DetectorConstruction::Construct() {
  AlCoverTopDownLog->SetSensitiveDetector(sensitive) ;
 
 
-
+ G4cout << "----------TODO BIEN 4-------------  "<< G4endl;
 
 
  //FAKE DETECTORS
@@ -477,18 +480,27 @@ G4Trd* RE11DetectorConstruction::Trapezoid(G4String name, G4double width) {
    return shape ;
 }
 
+
 void RE11DetectorConstruction::PlaceGeometry(G4RotationMatrix *pRot, G4ThreeVector tlate, G4LogicalVolume* pMotherLogical) {
-   
+  G4cout << "----------TODO BIEN 5-------------  "<< G4endl;
  //  G4double padEigth=51*mm;
    G4double XTranslation = 0 ;
    G4double space[4] = {70*mm,46.6*mm, 77.6*mm, 99.8*mm};  //space between FEBS
+
+   G4cout << "----------TODO BIEN 6-------------  "<< G4endl;  
+
    G4double crossBarSpace[4] = {83.5*mm,310*mm,199*mm,149*mm};  //space between crossbars
-   G4double ZTranslation = tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
-   G4int cpN=0;
+   // G4double ZTranslation = tripleGemHeight/2 - space[0] - FebCapCollection.at(0)->GetZHalfLength()/2;
+  
+   G4cout << "----------TODO BIEN  7-------------  "<< G4endl;
+
+ G4int cpN=0;
    G4ThreeVector position;
    G4ThreeVector position1;
+
 //---------------------------------------------------------------------------------fake bottom
-      
+  
+    
        XTranslation += FakeBottom->GetXHalfLength1() ;
        position = tlate + G4ThreeVector(XTranslation,0,0).transform(G4RotationMatrix(*pRot).inverse()) ;
        G4cout << "Volume ( 0 ) " << FakeBottom->GetName() << " the position is " <<  G4BestUnit(XTranslation,"Length") << G4endl;
@@ -720,7 +732,6 @@ th") << G4endl;
  
  //---------------------------------------------------------------------------------RPC
   
- 
      for(size_t i=0 ; i<trdCollection.size() ; i++) {
        // i counts as the copyNo
        XTranslation += trdCollection.at(i)->GetXHalfLength1() ;
@@ -805,6 +816,5 @@ th") << G4endl;
 	  pMotherLogical,
 	  false,
 	  cpN) ;
-
 }
 
